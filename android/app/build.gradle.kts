@@ -1,93 +1,87 @@
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    kotlin("android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader('UTF-8') { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterRoot = localProperties.getProperty('flutter.sdk')
-if (flutterRoot == null) {
-    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-}
-
-def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
-if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
-}
-
-def flutterVersionName = localProperties.getProperty('flutter.versionName')
-if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
-}
-
 android {
-    namespace "com.hdx.savings_tracker"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    namespace = "com.hdx.savings_tracker"
+    compileSdk = 34
+    ndkVersion = "25.1.8937393"
+
+    defaultConfig {
+        applicationId = "com.hdx.savings_tracker"
+        minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
+    }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_11.toString()
+        jvmTarget = "17"
     }
 
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.hdx.hdx_income_tracker"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
     }
 
-    flavorDimensions "environment"
+    flavorDimensions += "flavor-type"
     productFlavors {
-        dev {
-            dimension "environment"
-            applicationIdSuffix ".dev"
-            resValue "string", "app_name", "HDX Savings Tracker Dev"
+        create("dev") {
+            dimension = "flavor-type"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
         }
-        staging {
-            dimension "environment"
-            applicationIdSuffix ".staging"
-            resValue "string", "app_name", "HDX Savings Tracker Staging"
+        create("staging") {
+            dimension = "flavor-type"
+            applicationIdSuffix = ".staging"
+            versionNameSuffix = "-staging"
         }
-        prod {
-            dimension "environment"
-            resValue "string", "app_name", "HDX Savings Tracker Tracker"
+        create("prod") {
+            dimension = "flavor-type"
+            versionNameSuffix = "-prod"
         }
-        hotfix {
-            dimension "environment"
-            applicationIdSuffix ".hotfix"
-            resValue "string", "app_name", "HDX Savings Tracker Hotfix"
+        create("hotfix") {
+            dimension = "flavor-type"
+            applicationIdSuffix = ".hotfix"
+            versionNameSuffix = "-hotfix"
         }
     }
 
     buildTypes {
-        debug {
-            signingConfig signingConfigs.debug
-        }
         release {
-            signingConfig signingConfigs.release
-                    minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            isMinifyEnabled = true
+            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
         }
+        debug {
+            isMinifyEnabled = false
+        }
+    }
+
+    lint {
+        disable += "InvalidPackage"
     }
 }
 
-flutter {
-    source = "../.."
+afterEvaluate {
+    android.applicationVariants.all {
+        val variant = this
+        val variantName = variant.name
+        tasks.named("assemble${variantName.capitalize()}") {
+            doLast {
+                copy {
+                    val flavorName = variant.flavorName
+                    val buildType = variant.buildType.name
+                    from("build/outputs/apk/${flavorName}/${buildType}/app-${flavorName}-${buildType}.apk")
+                    into("../../build/app/outputs/flutter-apk/")
+                    rename("app-${flavorName}-${buildType}.apk", "app-${flavorName}-${buildType}.apk")
+                }
+            }
+        }
+    }
 }
