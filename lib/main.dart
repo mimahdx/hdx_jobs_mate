@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'core/config/env_config.dart';
 import 'app.dart';
+import 'di/injection_container.dart' as di;
 
-void main() {
-  EnvConfig.setupEnv(Environment.dev);
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  EnvConfig.setupEnv(Environment.prod);
+  await di.init();
   runApp(const MyApp());
 }
