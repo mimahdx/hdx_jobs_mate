@@ -1,4 +1,4 @@
-# hdx_income_tracker
+# hdx_savings_tracker
 
 A new Flutter project.
 
