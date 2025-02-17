@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.hdx.savings_tracker"
+    namespace = "com.hdx.jobs_mate"
     compileSdk = 34
     ndkVersion = "25.1.8937393"
 

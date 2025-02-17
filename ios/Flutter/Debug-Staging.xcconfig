@@ -1,5 +1,5 @@
 #include "Generated.xcconfig"
 FLUTTER_TARGET=lib/main_staging.dart
 ASSET_PREFIX=staging
-BUNDLE_NAME=HDX Savings Tracker Staging
-BUNDLE_DISPLAY_NAME=HDX Savings Tracker Staging
+BUNDLE_NAME=HDX Jobs Mate Staging
+BUNDLE_DISPLAY_NAME=HDX Jobs Mate Staging

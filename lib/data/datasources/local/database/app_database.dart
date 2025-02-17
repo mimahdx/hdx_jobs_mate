@@ -8,25 +8,28 @@ class AppDatabase {
   static const int dbVersion = 1;
 
   // Table Names
-  static const String categoryTable = 'categories';
-  static const String savingTable = 'savings';
+  static const String jobsTable = 'jobs';
+  static const String earningsTable = 'earnings';
 
   // Common Columns
   static const String columnId = 'id';
   static const String columnCreatedAt = 'created_at';
   static const String columnUpdatedAt = 'updated_at';
   static const String columnSyncStatus = 'sync_status';
+  static const String columnStatus = 'status';
 
-  // Category Table Columns
-  static const String columnCategoryName = 'name';
-  static const String columnCategoryType = 'type';
-  static const String columnCategoryDescription = 'description';
+  // Jobs Table Columns
+  static const String columnJobName = 'name';
+  static const String columnJobLink = 'link';
+  static const String columnJobSite = 'site';
+  static const String columnJobRedirectUrl = 'redirect_url';
+  static const String columnJobDescription = 'description';
 
-  // Saving Table Columns
-  static const String columnSavingCategoryId = 'category_id';
-  static const String columnSavingAmount = 'amount';
-  static const String columnSavingDate = 'transaction_date';
-  static const String columnSavingNote = 'note';
+  // Earnings Table Columns
+  static const String columnEarningJobId = 'job_id';
+  static const String columnEarningAmount = 'amount';
+  static const String columnEarningDate = 'transaction_date';
+  static const String columnEarningNote = 'note';
 
   static Database? _database;
 
@@ -48,41 +51,45 @@ class AppDatabase {
   }
 
   Future<void> _onCreate(Database db, int version) async {
-    // Create Categories table
+    // Create Jobs table
     await db.execute('''
-      CREATE TABLE ${AppDatabase.categoryTable} (
+      CREATE TABLE ${AppDatabase.jobsTable} (
         ${AppDatabase.columnId} TEXT PRIMARY KEY,
-        ${AppDatabase.columnCategoryName} TEXT NOT NULL,
-        ${AppDatabase.columnCategoryType} TEXT NOT NULL,
-        ${AppDatabase.columnCategoryDescription} TEXT,
-        ${AppDatabase.columnCreatedAt} INTEGER NOT NULL,
-        ${AppDatabase.columnUpdatedAt} INTEGER NOT NULL,
-        ${AppDatabase.columnSyncStatus} TEXT NOT NULL
-      )
-    ''');
-
-    // Create Savings table
-    await db.execute('''
-      CREATE TABLE ${AppDatabase.savingTable} (
-        ${AppDatabase.columnId} TEXT PRIMARY KEY,
-        ${AppDatabase.columnSavingCategoryId} TEXT NOT NULL,
-        ${AppDatabase.columnSavingAmount} REAL NOT NULL,
-        ${AppDatabase.columnSavingDate} INTEGER NOT NULL,
-        ${AppDatabase.columnSavingNote} TEXT,
+        ${AppDatabase.columnJobName} TEXT NOT NULL,
+        ${AppDatabase.columnJobLink} TEXT NOT NULL,
+        ${AppDatabase.columnJobSite} TEXT NOT NULL,
+        ${AppDatabase.columnJobRedirectUrl} TEXT,
+        ${AppDatabase.columnJobDescription} TEXT,
         ${AppDatabase.columnCreatedAt} INTEGER NOT NULL,
         ${AppDatabase.columnUpdatedAt} INTEGER NOT NULL,
         ${AppDatabase.columnSyncStatus} TEXT NOT NULL,
-        FOREIGN KEY (${AppDatabase.columnSavingCategoryId}) 
-          REFERENCES ${AppDatabase.categoryTable} (${AppDatabase.columnId})
+        ${AppDatabase.columnStatus} INTEGER NOT NULL
+      )
+    ''');
+
+    // Create Earnings table
+    await db.execute('''
+      CREATE TABLE ${AppDatabase.earningsTable} (
+        ${AppDatabase.columnId} TEXT PRIMARY KEY,
+        ${AppDatabase.columnEarningJobId} TEXT NOT NULL,
+        ${AppDatabase.columnEarningAmount} REAL NOT NULL,
+        ${AppDatabase.columnEarningDate} INTEGER NOT NULL,
+        ${AppDatabase.columnEarningNote} TEXT,
+        ${AppDatabase.columnCreatedAt} INTEGER NOT NULL,
+        ${AppDatabase.columnUpdatedAt} INTEGER NOT NULL,
+        ${AppDatabase.columnSyncStatus} TEXT NOT NULL,
+        ${AppDatabase.columnStatus} INTEGER NOT NULL,
+        FOREIGN KEY (${AppDatabase.columnEarningJobId}) 
+          REFERENCES ${AppDatabase.jobsTable} (${AppDatabase.columnId})
           ON DELETE CASCADE
       )
     ''');
 
     // Create indexes
     await db.execute(
-        'CREATE INDEX idx_saving_date ON ${AppDatabase.savingTable} (${AppDatabase.columnSavingDate})');
+        'CREATE INDEX idx_earning_date ON ${AppDatabase.earningsTable} (${AppDatabase.columnEarningDate})');
     await db.execute(
-        'CREATE INDEX idx_category_name ON ${AppDatabase.categoryTable} (${AppDatabase.columnCategoryName})');
+        'CREATE INDEX idx_job_name ON ${AppDatabase.jobsTable} (${AppDatabase.columnJobName})');
   }
 
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {

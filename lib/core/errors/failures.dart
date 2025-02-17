@@ -32,3 +32,13 @@ class ValidationFailure extends Failure {
 class UnexpectedFailure extends Failure {
   const UnexpectedFailure([super.message = 'Unexpected error occurred']);
 }
+
+class ApiException implements Exception {
+  final String message;
+  ApiException(this.message);
+}
+
+class RateLimitException implements Exception {
+  final String message;
+  RateLimitException(this.message);
+}

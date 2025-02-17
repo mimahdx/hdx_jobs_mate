@@ -7,9 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hdx_savings_tracker/app.dart';
-
-import 'package:hdx_savings_tracker/main_dev.dart';
+import 'package:hdx_jobs_mate/app.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hdx_jobs_mate/presentation/blocs/earning/earning_bloc.dart';
+import 'package:hdx_jobs_mate/presentation/blocs/job/job_bloc.dart';
+import 'package:hdx_jobs_mate/presentation/blocs/jobs_search/job_search_bloc.dart';
 import 'di/injection_container.dart' as di;
 import 'presentation/pages/welcome/welcome_page.dart';
 import 'presentation/pages/dashboard/dashboard_page.dart';
 import 'data/datasources/local/shared_prefs/first_launch_manager.dart';
-import 'presentation/blocs/category/category_bloc.dart';
-import 'presentation/blocs/saving/saving_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,11 +21,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<CategoryBloc>(
-          create: (_) => di.sl<CategoryBloc>(),
+        BlocProvider<JobBloc>(
+          create: (_) => di.sl<JobBloc>(),
         ),
-        BlocProvider<SavingBloc>(
-          create: (_) => di.sl<SavingBloc>(),
+        BlocProvider<EarningBloc>(
+          create: (_) => di.sl<EarningBloc>(),
+        ),
+        BlocProvider<JobSearchBloc>(
+          create: (_) => di.sl<JobSearchBloc>(),
         ),
       ],
       child: MaterialApp(
