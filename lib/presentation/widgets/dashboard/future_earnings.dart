@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../../../domain/entities/job.dart';
 import '../../../core/utils/currency_formatter.dart';
 
-class RecentlyAddedEarnings extends StatelessWidget {
+class FutureEarnings extends StatelessWidget {
   final List<Map<String, dynamic>> earnings;
   final List<Job> jobs;
 
-  const RecentlyAddedEarnings({
+  const FutureEarnings({
     super.key,
     required this.earnings,
     required this.jobs,
@@ -51,7 +51,7 @@ class RecentlyAddedEarnings extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
           child: Text(
-            'Recent Earnings',
+            'Future Earnings',
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),

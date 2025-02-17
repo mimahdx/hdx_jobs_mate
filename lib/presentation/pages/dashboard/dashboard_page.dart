@@ -9,8 +9,8 @@ import '../../blocs/earning/earning_state.dart';
 import '../../blocs/jobs_search/job_search_bloc.dart';
 import '../../blocs/jobs_search/job_search_event.dart';
 import '../../blocs/jobs_search/job_search_state.dart';
+import '../../widgets/dashboard/future_earnings.dart';
 import '../../widgets/dashboard/total_earnings_card.dart';
-import '../../widgets/dashboard/recently_added_earnings.dart';
 import '../../widgets/dashboard/recently_added_jobs.dart';
 import '../earnings/add_earning_page.dart';
 import '../jobs/add_job_page.dart';
@@ -333,6 +333,8 @@ class _DashboardPageState extends State<DashboardPage> {
                         final summary = earningState.summary;
                         final jobs = jobState.jobs;
 
+                        print(summary['futureEarnings']);
+
                         if (jobs.isEmpty) {
                           return _buildEmptyState();
                         }
@@ -348,13 +350,17 @@ class _DashboardPageState extends State<DashboardPage> {
                                 as List<Map<String, dynamic>>,
                               ),
                             ),
-                            if (summary['futureEarnings'] != null)
-                              RecentlyAddedEarnings(
-                                earnings: summary['futureEarnings']
-                                as List<Map<String, dynamic>>,
-                                jobs: jobs,
+                            if (summary['futureEarnings'] != null &&
+                                (summary['futureEarnings'] as List).isNotEmpty)
+                              Column(
+                                children: [
+                                  FutureEarnings(
+                                    earnings: summary['futureEarnings'] as List<Map<String, dynamic>>,
+                                    jobs: jobs,
+                                  ),
+                                  const SizedBox(height: 16),
+                                ],
                               ),
-                            const SizedBox(height: 16),
                             RecentlyAddedJobs(jobs: jobs),
                             const SizedBox(height: 16),
                             _buildJobListings(),
