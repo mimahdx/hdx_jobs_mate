@@ -19,13 +19,13 @@ class WelcomePage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const Icon(
-                Icons.savings_outlined,
-                size: 80,
+                Icons.workspace_premium,
+                size: 120,
                 color: Colors.blue,
               ),
               const SizedBox(height: 32),
               const Text(
-                'Welcome to your Savings Tracker',
+                'Welcome to HDX Jobs Mate',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -41,9 +41,9 @@ class WelcomePage extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               const Text(
-                'All your financial data is stored locally on your device. We do not collect, store, or share any of your personal information.',
+                'All your data is stored locally on your device. We do not collect, store, or share any of your personal information.',
                 style: TextStyle(fontSize: 16),
                 textAlign: TextAlign.center,
               ),
