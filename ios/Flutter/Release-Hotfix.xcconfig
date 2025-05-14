@@ -1,5 +1,0 @@
-#include "Generated.xcconfig"
-FLUTTER_TARGET=lib/main_hotfix.dart
-ASSET_PREFIX=hotfix
-BUNDLE_NAME=HDX Jobs Mate Hotfix
-BUNDLE_DISPLAY_NAME=HDX Jobs Mate Hotfix

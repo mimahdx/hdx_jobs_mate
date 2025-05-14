@@ -77,7 +77,7 @@ class JobCacheManager {
     required String location,
     required Future<List<JobListing>> Function() fetcher,
   }) async {
-    final key = '${query}_${location}';
+    final key = '${query}_$location';
     final now = DateTime.now();
 
     if (_cache.containsKey(key)) {

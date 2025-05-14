@@ -76,7 +76,7 @@ class TotalEarningsCard extends StatelessWidget {
                   ),
                 ],
               ),
-            )).toList(),
+            )),
           ],
         ),
       ),
